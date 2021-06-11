@@ -1,11 +1,11 @@
 import React from 'react';
 
-export default function ApplicationLogo({ className }) {
+export default function ApplicationLogo({ className, width=222.667, height=220 }) {
     return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width={222.667}
-          height={220}
+          width={width}
+          height={height}
           viewBox="0 0 167 165"
           className={className}
         >
