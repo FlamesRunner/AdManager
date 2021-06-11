@@ -52,7 +52,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <Label forInput="email" value="Email" />
+                    <Label forInput="email" value="Email (@thevarsity.ca)" />
 
                     <Input
                         type="email"

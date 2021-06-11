@@ -8264,7 +8264,7 @@ function Register() {
         className: "mt-4",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_Label__WEBPACK_IMPORTED_MODULE_3__.default, {
           forInput: "email",
-          value: "Email"
+          value: "Email (@thevarsity.ca)"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_Input__WEBPACK_IMPORTED_MODULE_2__.default, {
           type: "email",
           name: "email",
