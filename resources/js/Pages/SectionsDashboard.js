@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Body from '../Components/Body';
 import { InertiaLink } from '@inertiajs/inertia-react';
-import Input from '../Components/Input';
 import axios from 'axios';
-import { isInteger } from 'lodash';
 import Button from '../Components/Button';
 
 export default function SectionsDashboard(props) {

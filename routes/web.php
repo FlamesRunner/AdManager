@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\SectionsController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\AdsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +28,7 @@ Route::get('/', function () {
 });
 
 // Dashboard routes
+// TODO: Move routes into dedicated files
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -47,6 +50,8 @@ Route::get('/manage/media', function () {
 
 Route::get('/sections/list', [SectionsController::class, 'index'])->middleware(['auth', 'verified'])->name('listSections');
 
+Route::get('/sections/search', [SectionsController::class, 'search'])->middleware(['auth', 'verified'])->name('searchSections');
+
 Route::get('/sections/create', function () {
     return Inertia::render('SectionsCreate');
 })->middleware(['auth', 'verified'])->name('createSectionPage');
@@ -56,5 +61,28 @@ Route::post('/sections/delete', [SectionsController::class, 'destroy'])->middlew
 
 Route::post('/sections/update', [SectionsController::class, 'update'])->middleware(['auth', 'verified'])->name('updateSection');
 
+// Media routes
+
+Route::get('/media/list', [MediaController::class, 'index'])->middleware(['auth', 'verified'])->name('listMedia');
+
+Route::get('/media/get/{id}', [MediaController::class, 'show'])->middleware(['auth', 'verified'])->name('getMedia');
+
+Route::get('/media/search', [MediaController::class, 'search'])->middleware(['auth', 'verified'])->name('searchMedia');
+
+Route::post('/media/store', [MediaController::class, 'create'])->middleware(['auth', 'verified'])->name('storeMedia');
+
+Route::post('/media/delete', [MediaController::class, 'destroy'])->middleware(['auth', 'verified'])->name('deleteMedia');
+
+// Ad routes
+
+Route::get('/ads/list', [AdsController::class, 'index'])->middleware(['auth', 'verified'])->name('listAds');
+
+Route::get('/ads/create', function () {
+    return Inertia::render('AdsCreate');
+})->middleware(['auth', 'verified'])->name('createAdPage');
+
+Route::post('/ads/new', [AdsController::class, 'create'])->middleware(['auth', 'verified'])->name('createAd');
+
+Route::post('/ads/delete', [AdsController::class, 'destroy'])->middleware(['auth', 'verified'])->name('deleteAd');
 
 require __DIR__.'/auth.php';

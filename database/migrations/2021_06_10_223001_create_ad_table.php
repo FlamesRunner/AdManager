@@ -16,13 +16,13 @@ class CreateAdTable extends Migration
         Schema::create('ads', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->text('name');
+            $table->string('name')->unique();
             $table->unsignedBigInteger('usingMediaId');
             $table->unsignedBigInteger('sectionId');
             $table->foreign('usingMediaId')->references('id')->on('media');
             $table->foreign('sectionId')->references('id')->on('sections');
-            $table->timestamp('startingOn');
-            $table->integer('duration');
+            $table->integer('startingOn');
+            $table->integer('endingOn');
             $table->integer('priority');
         });
     }

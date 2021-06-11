@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Section;
-use Inertia\Inertia;
-use Inertia\Redirect;
 
 class SectionsController extends Controller
 {
@@ -28,6 +26,9 @@ class SectionsController extends Controller
      */
     public function create(Request $request)
     {
+        $request->validate([
+            'name' => 'required|unique:sections|max:255',
+        ]);
         $newSection = Section::create([
             'name' => $request->name,
         ]);
@@ -46,6 +47,21 @@ class SectionsController extends Controller
     {
         $sections = Section::find($id);
         return response()->json(['status' => 200, 'sections' => $sections]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param   \Illuminate\Http\Request    $request
+     * @return  \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        if ($request->has('name')) {
+            return response()->json(['status' => 200, 'results' => Section::where('name', 'like', '%' . $request->name . '%')->orderBy('name')->take(5)->get()]);
+        }
+
+        return response()->json(['status' => 200, 'results' => []]);
     }
 
     /**

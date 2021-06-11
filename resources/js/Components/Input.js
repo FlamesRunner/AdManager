@@ -10,9 +10,13 @@ export default function Input({
     required,
     isFocused,
     handleChange,
-    children = false
+    min,
+    max,
+    children = false,
+    customRef = null,
+    handleOnClick = () => {}
 }) {
-    const input = useRef();
+    const input = (customRef === null) ? useRef() : customRef;
 
     useEffect(() => {
         if (isFocused) {
@@ -34,6 +38,9 @@ export default function Input({
                 autoComplete={autoComplete}
                 placeholder={placeHolder}
                 required={required}
+                min={min}
+                max={max}
+                onClick={(e) => handleOnClick(e)}
                 onChange={(e) => handleChange(e)}
             />
             {children}

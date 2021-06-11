@@ -21,7 +21,7 @@ class Ad extends Authenticatable
         'usingMediaId',
         'sectionId',
         'startingOn',
-        'duration',
+        'endingOn',
         'priority'
     ];
     
