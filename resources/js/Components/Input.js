@@ -14,7 +14,8 @@ export default function Input({
     max,
     children = false,
     customRef = null,
-    handleOnClick = () => {}
+    handleOnClick,
+    onBlur
 }) {
     const input = (customRef === null) ? useRef() : customRef;
 
@@ -40,6 +41,7 @@ export default function Input({
                 required={required}
                 min={min}
                 max={max}
+                onBlur={onBlur}
                 onClick={(e) => handleOnClick(e)}
                 onChange={(e) => handleChange(e)}
             />

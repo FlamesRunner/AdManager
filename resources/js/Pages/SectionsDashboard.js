@@ -3,6 +3,7 @@ import Body from '../Components/Body';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import axios from 'axios';
 import Button from '../Components/Button';
+import Input from '../Components/Input';
 
 export default function SectionsDashboard(props) {
     const [sections, setSections] = useState(null);
@@ -28,6 +29,11 @@ export default function SectionsDashboard(props) {
         axios.post("/sections/delete", {
             "id": e.target.dataset.sectionId
         })
+            .then(function (res) {
+                if (typeof res.data.msg !== 'undefined') {
+                    alert(res.data.msg);
+                }
+            })
             .catch(function (e) {
                 console.error(e);
             }).finally(() => {
@@ -79,6 +85,21 @@ export default function SectionsDashboard(props) {
             });
     }
 
+    const sectionSearch = (name) => {
+        axios.get(route('searchSections'), {
+            params: {
+                "name": name
+            }
+        })
+            .then(res => {
+                setSections(res.data.results);
+            })
+            .catch(function (e) {
+                setSections([]);
+                console.error(e);
+            })
+    }
+
     if (sections === null || action != null) return <Body props={props} pageName={"sections"} children={<div></div>} isLoading={true} />;
 
     return (
@@ -87,13 +108,32 @@ export default function SectionsDashboard(props) {
                 <div className="py-12">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div className="grid grid-flow-col auto-cols-fr px-2">
-                            <div><p>Section Name</p></div>
                             <div className="text-right">
                                 <InertiaLink href={route('createSectionPage')} className="text-sm text-gray-700 underline mb-4">
                                     Create section
                                 </InertiaLink>
                             </div>
                         </div>
+                        <br />
+                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div className="p-6 bg-white border-b border-gray-200 rounded-md">
+                                <Input
+                                    type="text"
+                                    name=""
+                                    className="mt-1 block w-full disabled:opacity-75"
+                                    isFocused={true}
+                                    handleChange={
+                                        (e) => {
+                                            sectionSearch(e.target.value);
+                                        }
+                                    }
+                                    placeHolder={`Search...`}
+                                    handleOnClick={(e) => { e.target.value = ""; sectionSearch("") }}
+                                    autoComplete={"off"}
+                                />
+                            </div>
+                        </div>
+                        <br />
                         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             {sections.map((section, i) => {
                                 return (<div key={i} className="p-6 bg-white border-b border-gray-200">
@@ -109,11 +149,11 @@ export default function SectionsDashboard(props) {
                                                             e.target.nextSibling.click();
                                                         }
                                                     }}
-                                                    onChange={(e) => setFormInput(e.target.value)} 
-                                                    className="disabled:opacity-50 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm flex" 
-                                                    type="text" 
-                                                    placeholder="New name..." 
-                                                    defaultValue={section.name} 
+                                                    onChange={(e) => setFormInput(e.target.value)}
+                                                    className="disabled:opacity-50 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm flex"
+                                                    type="text"
+                                                    placeholder="New name..."
+                                                    defaultValue={section.name}
                                                 />
                                                 <Button className="disabled:opacity-50 ml-2 flex h-auto" handleOnClick={(e) => {
                                                     updateSectionBtn(e);

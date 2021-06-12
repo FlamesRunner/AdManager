@@ -1,13 +1,14 @@
 import React from 'react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Body from '../Components/Body'
-import { InertiaLink } from '@inertiajs/inertia-react';
 import { useDropzone } from 'react-dropzone'
+import Input from '../Components/Input';
 
 export default function MediaDashboard(props) {
     const [media, setMedia] = useState(null);
     const [action, setAction] = useState(null);
     const [statusMsg, setStatusMsg] = useState("");
+
     const onDrop = useCallback(acceptedFiles => {
         setAction("upload");
         // Do something with the files
@@ -19,13 +20,14 @@ export default function MediaDashboard(props) {
         axios.post(route('storeMedia'), fd, config)
             .then((response) => {
                 if (response.uploaded) {
-                    setStatusMsg("Upload successful");
+                    setStatusMsg("(Upload successful)");
                 } else {
-                    setStatusMsg("Upload failed");
+                    setStatusMsg("(Upload failed)");
                 }
             })
             .catch(error => {
                 console.error(error);
+                setStatusMsg("(Upload failed)");
             })
             .finally(() => {
                 setAction(null);
@@ -34,6 +36,21 @@ export default function MediaDashboard(props) {
     }, [])
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+
+    const mediaSearch = (name) => {
+        axios.get(route('searchMedia'), {
+            params: {
+                "name": name
+            }
+        })
+            .then(res => {
+                setMedia(res.data.results);
+            })
+            .catch(function (e) {
+                setMedia([]);
+                console.error(e);
+            })
+    }
 
     useEffect(() => {
         if (media === null && action === null) {
@@ -81,15 +98,31 @@ export default function MediaDashboard(props) {
                             <input {...getInputProps()} />
                             {
                                 isDragActive ?
-                                    <p className="text-center">Drop here to upload {statusMsg}</p> :
-                                    <p className="text-center cursor-pointer">Drag and drop your media here, or click to select files</p>
+                                    <p className="text-center">Drop here to upload</p> :
+                                    <p className="text-center cursor-pointer">Drag and drop your media here, or click to select files {statusMsg}</p>
                             }
                         </div>
                     </div>
                     <br />
-                    <div className="grid grid-flow-col auto-cols-fr px-2">
-                        <div><p>Filename (size in kilobytes)</p></div>
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6 bg-white border-b border-gray-200">
+                            <Input
+                                type="text"
+                                name=""
+                                className="mt-1 block w-full disabled:opacity-75"
+                                isFocused={true}
+                                handleChange={
+                                    (e) => {
+                                        mediaSearch(e.target.value);
+                                    }
+                                }
+                                placeHolder={`Search...`}
+                                handleOnClick={(e) => { e.target.value = ""; mediaSearch("") }}
+                                autoComplete={"off"}
+                            />
+                        </div>
                     </div>
+                    <br />
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         {media.map((m, i) => {
                             return (<div key={i} className="p-6 bg-white border-b border-gray-200">

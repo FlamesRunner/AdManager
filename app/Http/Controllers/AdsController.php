@@ -17,7 +17,7 @@ class AdsController extends Controller
     public function index()
     {
         $ads = Ad::orderBy('name', 'ASC')->get();
-        return response()->json(['status' => 200, 'ads' => $ads]);
+        return response()->json(['status' => 200, 'ads' => $ads, 'sections' => Section::get()]);
     }
 
     /**

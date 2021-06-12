@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Section;
+use App\Models\Ad;
 
 class SectionsController extends Controller
 {
@@ -89,6 +90,10 @@ class SectionsController extends Controller
     public function destroy(Request $request)
     {
         $section = Section::find($request->id);
+        $adCount = Ad::where('sectionId', '=', $request->id)->count();
+        if ($adCount > 0) {
+            return response()->json(["status" => 200, "msg" => "One or more ads still use this section."]);
+        }
         if ($section->delete()) {
             return response()->json(["status" => 200]);
         }
