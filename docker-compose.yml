@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: admanager
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: admanagerv2
+    container_name: admanagerv2_ctr
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - admanagerv2_net
+  db:
+    image: mysql:5.7
+    container_name: admanagerv2_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - admanagerv2_net
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: admanagerv2_nginx
+    restart: unless-stopped
+    ports:
+      - 8001:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      - admanagerv2_net
+networks:
+  admanagerv2_net:
+    driver: bridge

@@ -10,6 +10,13 @@ use App\Models\Media;
 class AdsController extends Controller
 {
     /**
+     * Run required tasks.
+     */
+    public function __construct() {
+        Ad::where('endingOn', '<', time())->delete();
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
