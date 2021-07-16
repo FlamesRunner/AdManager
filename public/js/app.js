@@ -7446,7 +7446,9 @@ function AdsCreate(props) {
     priority: 0,
     sectionId: "",
     startingOn: "",
-    endingOn: ""
+    endingOn: "",
+    url: "",
+    tagLine: ""
   }),
       data = _useForm.data,
       setData = _useForm.setData,
@@ -7552,9 +7554,15 @@ function AdsCreate(props) {
     title: "Create ad",
     isLoading: false,
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         className: "py-12",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          className: "max-w-7xl mx-auto sm:px-6 lg:px-8",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+            className: "bg-white overflow-hidden shadow-sm sm:rounded-lg p-6",
+            children: "Please note that all times are in EST. If you set an ad to start on June 1 and end on June 30, the ad will start at June 1, 12 AM EST and end on June 30, 12 AM EST."
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "max-w-7xl mx-auto sm:px-6 lg:px-8",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
             className: "bg-white overflow-hidden shadow-sm sm:rounded-lg p-6",
@@ -7569,6 +7577,24 @@ function AdsCreate(props) {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_Input__WEBPACK_IMPORTED_MODULE_2__.default, {
                 type: "text",
                 name: "name",
+                className: "mt-1 block w-full",
+                isFocused: true,
+                handleChange: onHandleChange
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_Label__WEBPACK_IMPORTED_MODULE_6__.default, {
+                forInput: "url",
+                value: "URL"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_Input__WEBPACK_IMPORTED_MODULE_2__.default, {
+                type: "url",
+                name: "url",
+                className: "mt-1 block w-full",
+                isFocused: true,
+                handleChange: onHandleChange
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_Label__WEBPACK_IMPORTED_MODULE_6__.default, {
+                forInput: "tagLine",
+                value: "Tagline (title to display)"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Components_Input__WEBPACK_IMPORTED_MODULE_2__.default, {
+                type: "text",
+                name: "tagLine",
                 className: "mt-1 block w-full",
                 isFocused: true,
                 handleChange: onHandleChange
@@ -7595,7 +7621,8 @@ function AdsCreate(props) {
                 },
                 handleOnClick: mediaInputClicked,
                 customRef: mediaInputRef,
-                autoComplete: "off"
+                autoComplete: "off",
+                placeHolder: "Start typing to see suggestions..."
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                 style: {
                   position: "relative"
@@ -7633,7 +7660,8 @@ function AdsCreate(props) {
                 },
                 autoComplete: "off",
                 customRef: sectionInputRef,
-                handleOnClick: sectionInputClicked
+                handleOnClick: sectionInputClicked,
+                placeHolder: "Start typing to see suggestions..."
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                 style: {
                   position: "relative"
@@ -7684,7 +7712,7 @@ function AdsCreate(props) {
               })]
             })]
           })
-        })
+        })]
       })
     })
   });
@@ -7831,7 +7859,7 @@ function AdsDashboard(props) {
 
   var updateSectionId = function updateSectionId(e) {
     var sectionId = e.target.dataset.sectionId;
-    sectionInputRef.current.value = "Using " + e.target.innerHTML + " (ID " + sectionId + ")";
+    sectionInputRef.current.value = "Showing only section " + e.target.innerHTML + " (ID " + sectionId + ") ads";
     sectionInputRef.current.disabled = true;
     setSectionId(sectionId);
     setSectionResults([]);
@@ -7874,7 +7902,7 @@ function AdsDashboard(props) {
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                   className: "col-span-8",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-                    children: "Ad details"
+                    children: "Ad details (All times on this page are in your local time)"
                   })
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                   className: "col-span-4 text-right",
@@ -7937,14 +7965,18 @@ function AdsDashboard(props) {
 
               return sectionId == el.sectionId;
             }).map(function (ad, i) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
                 className: "p-6 bg-white border-b border-gray-200",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
                   className: "grid grid-flow-col",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                     className: "col-span-8",
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
-                      children: [ad.name, " (Priority ", ad.priority, ") - Runs ", new Date(ad.startingOn * 1000).toLocaleDateString("en-CA"), " to ", new Date(ad.endingOn * 1000).toLocaleDateString("en-CA")]
+                      children: [ad.name, " (Priority ", ad.priority, "): Runs from ", new Date(ad.startingOn * 1000).toLocaleString('en-CA', {
+                        timeZone: 'EST'
+                      }), " to ", new Date(ad.endingOn * 1000).toLocaleString('en-CA', {
+                        timeZone: 'EST'
+                      })]
                     })
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                     className: "col-span-4 text-right inline-block",
@@ -7973,7 +8005,18 @@ function AdsDashboard(props) {
                       })]
                     })
                   })]
-                })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
+                    children: ["Tagline: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+                      style: {
+                        color: "blue"
+                      },
+                      target: "_blank",
+                      href: ad.url,
+                      children: ad.tagLine
+                    })]
+                  })
+                })]
               }, i);
             }), ads.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
               className: "p-6 bg-white border-b border-gray-200",

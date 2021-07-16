@@ -42,14 +42,18 @@ class AdsController extends Controller
             'sectionId' => 'required|integer|gt:0',
             'startingOn' => 'required|date|before:endingOn',
             'endingOn' => 'required|date|after:startingOn',
+            'url' => 'required|url',
+            "tagLine" => 'required|min:5|max:512'
         ]);
         $newAd = Ad::create([
             'name' => $request->name,
             'priority' => $request->priority,
             'usingMediaId' => $request->usingMediaId,
             'sectionId' => $request->sectionId,
-            'startingOn' => strtotime($request->startingOn),
-            'endingOn' => strtotime($request->endingOn)
+            'startingOn' => strtotime($request->startingOn . ' America/New_York'),
+            'endingOn' => strtotime($request->endingOn . ' America/New_York'),
+            'url' => $request->url,
+            'tagLine' => $request->tagLine
         ]);
         if ($newAd) {
             return redirect(route('adsDashboard'), 302);
@@ -74,7 +78,7 @@ class AdsController extends Controller
             ->get();
 
         if ($ads->count() == 0) {
-            return response()->json(["status" => 200, "imageData" => ""]);
+            return response()->json(["status" => 418, "imageData" => ""], 418);
         }
 
         $priority_end = Ad::where('sectionId', '=', $section_id)
@@ -89,11 +93,11 @@ class AdsController extends Controller
             $upper_bound = $current_priority + $ad->priority;
             if ($choose_ad >= $lower_bound && $choose_ad < $upper_bound) {
                 $image = base64_encode(file_get_contents(base_path() . "/" . env("IMAGE_DIR", "images") . "/" . Media::find($ad->usingMediaId)->name));
-                return response()->json(["status" => 200, "imageData" => $image]);
+                return response()->json(["status" => 200, "imageData" => $image, "url" => $ad->url, "tagline" => $ad->tagLine]);
             }
             $current_priority += $ad->priority;
         }
-        return response()->json(["status" => 200, "imageData" => ""]);
+        return response()->json(["status" => 418, "imageData" => ""], 418);
     }
 
     /**

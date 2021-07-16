@@ -64,7 +64,7 @@ export default function AdsDashboard(props) {
 
     const updateSectionId = (e) => {
         let sectionId = e.target.dataset.sectionId;
-        sectionInputRef.current.value = "Using " + e.target.innerHTML + " (ID " + sectionId + ")";
+        sectionInputRef.current.value = "Showing only section " + e.target.innerHTML + " (ID " + sectionId + ") ads";
         sectionInputRef.current.disabled = true;
         setSectionId(sectionId);
         setSectionResults([]);
@@ -91,7 +91,7 @@ export default function AdsDashboard(props) {
                         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-6 bg-white border-b border-gray-200">
                                 <div className="grid grid-flow-col">
-                                    <div className="col-span-8"><p>Ad details</p></div>
+                                    <div className="col-span-8"><p>Ad details (All times on this page are in your local time)</p></div>
                                     <div className="col-span-4 text-right">
                                         <InertiaLink href={route('createAdPage')} className="text-sm text-gray-700 underline mb-4">
                                             Create ad
@@ -154,7 +154,7 @@ export default function AdsDashboard(props) {
                                     return (<div key={i} className="p-6 bg-white border-b border-gray-200">
                                         <div className="grid grid-flow-col">
                                             <div className="col-span-8">
-                                                <p>{ad.name} (Priority {ad.priority}) - Runs {new Date(ad.startingOn * 1000).toLocaleDateString("en-CA")} to {new Date(ad.endingOn * 1000).toLocaleDateString("en-CA")}</p>
+                                                <p>{ad.name} (Priority {ad.priority}): Runs from {new Date(ad.startingOn * 1000).toLocaleString('en-CA', { timeZone: 'EST' })} to {new Date(ad.endingOn * 1000).toLocaleString('en-CA', { timeZone: 'EST' })}</p>
                                             </div>
                                             <div className="col-span-4 text-right inline-block">
                                                 <div data-ad-group={ad.id}>
@@ -168,6 +168,9 @@ export default function AdsDashboard(props) {
                                                     }}>View</p>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div>
+                                            <p>Tagline: <a style={{ color: "blue" }} target={"_blank"} href={ad.url}>{ad.tagLine}</a></p>
                                         </div>
                                     </div>);
                                 })}

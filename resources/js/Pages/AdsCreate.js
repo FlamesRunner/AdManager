@@ -13,7 +13,9 @@ export default function AdsCreate(props) {
         priority: 0,
         sectionId: "",
         startingOn: "",
-        endingOn: ""
+        endingOn: "",
+        url: "",
+        tagLine: ""
     });
     const [mediaResults, setMediaResults] = useState([]);
     const [sectionResults, setSectionResults] = useState([]);
@@ -108,6 +110,13 @@ export default function AdsCreate(props) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                        Please note that all times are in EST. If you set an ad to start on June 1 and end on June 30,
+                        the ad will start at June 1, 12 AM EST and end on June 30, 12 AM EST.
+                    </div>
+                </div>
+                <br />
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                         <ValidationErrors errors={errors} />
                         <form onSubmit={submit} autoComplete={"off"}>
                             <Label forInput="name" value="Name" />
@@ -115,6 +124,26 @@ export default function AdsCreate(props) {
                             <Input
                                 type="text"
                                 name="name"
+                                className="mt-1 block w-full"
+                                isFocused={true}
+                                handleChange={onHandleChange}
+                            />
+                            <br />
+                            <Label forInput="url" value="URL" />
+
+                            <Input
+                                type="url"
+                                name="url"
+                                className="mt-1 block w-full"
+                                isFocused={true}
+                                handleChange={onHandleChange}
+                            />
+                            <br />
+                            <Label forInput="tagLine" value="Tagline (title to display)" />
+
+                            <Input
+                                type="text"
+                                name="tagLine"
                                 className="mt-1 block w-full"
                                 isFocused={true}
                                 handleChange={onHandleChange}
@@ -144,6 +173,7 @@ export default function AdsCreate(props) {
                                 handleOnClick={mediaInputClicked}
                                 customRef={mediaInputRef}
                                 autoComplete={"off"}
+                                placeHolder={"Start typing to see suggestions..."}
                             />
                             <div style={{
                                 position: "relative"
@@ -179,6 +209,7 @@ export default function AdsCreate(props) {
                                 autoComplete={"off"}
                                 customRef={sectionInputRef}
                                 handleOnClick={sectionInputClicked}
+                                placeHolder={"Start typing to see suggestions..."}
                             />
                             <div style={{
                                 position: "relative"

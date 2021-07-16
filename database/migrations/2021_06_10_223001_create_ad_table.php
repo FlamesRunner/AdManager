@@ -24,6 +24,8 @@ class CreateAdTable extends Migration
             $table->integer('startingOn');
             $table->integer('endingOn');
             $table->integer('priority');
+            $table->string('tagLine');
+            $table->string('url');
         });
     }
 

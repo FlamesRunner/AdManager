@@ -22,7 +22,9 @@ class Ad extends Authenticatable
         'sectionId',
         'startingOn',
         'endingOn',
-        'priority'
+        'priority',
+        'url',
+        'tagLine'
     ];
     
     /**
