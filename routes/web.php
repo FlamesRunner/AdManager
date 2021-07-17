@@ -85,4 +85,8 @@ Route::post('/ads/new', [AdsController::class, 'create'])->middleware(['auth', '
 
 Route::post('/ads/delete', [AdsController::class, 'destroy'])->middleware(['auth', 'verified'])->name('deleteAd');
 
+Route::get('/ads/edit/{id}', [AdsController::class, 'edit'])->middleware(['auth', 'verified'])->name('editAd');
+
+Route::post('/ads/update', [AdsController::class, 'update'])->middleware(['auth', 'verified'])->name('updateAd');
+
 require __DIR__.'/auth.php';

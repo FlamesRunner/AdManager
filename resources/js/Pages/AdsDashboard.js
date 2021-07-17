@@ -163,6 +163,10 @@ export default function AdsDashboard(props) {
                                                         deleteAd(e);
                                                     }}>Delete</p>
                                                     <p className="inline-block">&nbsp;/&nbsp;</p>
+                                                    <InertiaLink href={route('editAd', {'id': ad.id})} className="inline-block cursor-pointer hover:underline">
+                                                        Update
+                                                    </InertiaLink>
+                                                    <p className="inline-block">&nbsp;/&nbsp;</p>
                                                     <p className="inline-block cursor-pointer hover:underline" data-media-id={ad.usingMediaId} onClick={(e) => {
                                                         viewMedia(e.target.dataset.mediaId);
                                                     }}>View</p>

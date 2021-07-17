@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use App\Models\Ad;
 use App\Models\Section;
 use App\Models\Media;
@@ -59,6 +60,49 @@ class AdsController extends Controller
             return redirect(route('adsDashboard'), 302);
         }
     }
+
+    /**
+     * Update the specified ad in storage.
+     * 
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request) {
+        $request->validate([
+            'name' => 'required|max:255',
+            'priority' => 'required|integer|gt:0',
+            'usingMediaId' => 'required|integer|gt:0',
+            'sectionId' => 'required|integer|gt:0',
+            'startingOn' => 'required|date|before:endingOn',
+            'endingOn' => 'required|date|after:startingOn',
+            'url' => 'required|url',
+            "tagLine" => 'required|min:5|max:512'
+        ]);
+        $ad = Ad::find($request->id);
+        $ad->name = $request->name;
+        $ad->priority = $request->priority;
+        $ad->usingMediaId = $request->usingMediaId;
+        $ad->sectionId = $request->sectionId;
+        $ad->startingOn = strtotime($request->startingOn . ' America/New_York');
+        $ad->endingOn = strtotime($request->endingOn . ' America/New_York');
+        $ad->url = $request->url;
+        $ad->tagLine = $request->tagLine;
+        $ad->save();
+        return redirect(route('adsDashboard'), 302);
+    }
+
+    /**
+     * Show the form for editing the specified ad.
+     * 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id) {
+        $ad = Ad::find($id);
+        if (empty($ad)) return redirect(route('adsDashboard'));
+        return Inertia::render('AdsUpdate', ['ad' => $ad]);
+    }
+
 
     /**
      * Retrieve the appropriate ad given the section name.

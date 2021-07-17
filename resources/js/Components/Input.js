@@ -14,7 +14,7 @@ export default function Input({
     max,
     children = false,
     customRef = null,
-    handleOnClick,
+    handleOnClick = (e) => {},
     onBlur
 }) {
     const input = (customRef === null) ? useRef() : customRef;
