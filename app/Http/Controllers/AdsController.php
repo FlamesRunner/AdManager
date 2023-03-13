@@ -145,6 +145,44 @@ class AdsController extends Controller
     }
 
     /**
+     * Retrieve the appropriate ad given the section name, with the condition that instead of an API response on success,
+     * the image blob is returned.
+     * @param  string   $section_name
+     * @return \Illuminate\Http\Response
+     */
+    public function showAdBySectionImage($section_name) {
+        $section_object = Section::where('name', $section_name)->first();
+        if (!$section_object) return response()->json(["status" => 404, "error" => "Section not found"], 404);
+        $section_id = $section_object->id;
+        $current_time = time();
+        $ads = Ad::where('sectionId', '=', $section_id)
+            ->where('startingOn', '<', $current_time)
+            ->where('endingOn', '>', $current_time)
+            ->get();
+
+        if ($ads->count() == 0) {
+            return response([], 404);
+        }
+
+        $priority_end = Ad::where('sectionId', '=', $section_id)
+            ->where('startingOn', '<', $current_time)
+            ->where('endingOn', '>', $current_time)
+            ->sum('priority');
+        $choose_ad = rand(0, $priority_end - 1);
+
+        $current_priority = 0;
+        foreach ($ads as $ad) {
+            $lower_bound = $current_priority;
+            $upper_bound = $current_priority + $ad->priority;
+            if ($choose_ad >= $lower_bound && $choose_ad < $upper_bound) {
+                return response()->file(base_path() . "/" . env("IMAGE_DIR", "images") . "/" . Media::find($ad->usingMediaId)->name);
+            }
+            $current_priority += $ad->priority;
+        }
+        return response([], 404);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -157,4 +195,6 @@ class AdsController extends Controller
             return response()->json(["status" => 200]);
         }
     }
+
+
 }

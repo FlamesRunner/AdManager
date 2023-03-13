@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/plug/{sectionName}', [AdsController::class, 'showAdBySection']);
+Route::get('/plug/{sectionName}/image', [AdsController::class, 'showAdBySectionImage']);
