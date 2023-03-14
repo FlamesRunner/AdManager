@@ -28,7 +28,7 @@ class MediaController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         $imageName = pathinfo($request->image->getClientOriginalName(), PATHINFO_FILENAME) . '-' . bin2hex(openssl_random_pseudo_bytes(4)) .  '.' . pathinfo($request->image->getClientOriginalName(), PATHINFO_EXTENSION);

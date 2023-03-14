@@ -11,8 +11,11 @@ services:
     container_name: admanagerv2_ctr
     restart: unless-stopped
     working_dir: /var/www/
+    environment:
+      PHP_INI_SCAN_DIR: "/usr/local/etc/php/custom.d:/usr/local/etc/php/conf.d"
     volumes:
       - ./:/var/www
+      - ./docker-compose/php/:/usr/local/etc/php/custom.d
     networks:
       - admanagerv2_net
   db:
